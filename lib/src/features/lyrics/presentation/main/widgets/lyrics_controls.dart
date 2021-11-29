@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_bloc.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
 
 class LyricsControls extends StatefulWidget {
   const LyricsControls({

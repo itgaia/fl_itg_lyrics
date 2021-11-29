@@ -11,7 +11,7 @@ import 'package:itg_lyrics/src/features/lyrics/data/lyrics_remote_datasource.dar
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_repository_impl.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/get_lyrics_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_repository.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_bloc.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
 import 'package:itg_lyrics/src/features/settings/settings_controller.dart';
 import 'package:itg_lyrics/src/features/settings/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';

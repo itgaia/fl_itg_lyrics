@@ -4,11 +4,11 @@ import 'package:itg_lyrics/src/core/error/failures.dart';
 import 'package:itg_lyrics/src/core/usecases/usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/get_lyrics_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_bloc.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../test_helper.dart';
-import '../lyrics_test_helper.dart';
+import '../../../../test_helper.dart';
+import '../../lyrics_test_helper.dart';
 
 void main() {
   late LyricsBloc bloc;

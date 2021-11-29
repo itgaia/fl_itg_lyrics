@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/get_lyrics_usecase.dart';
 
-import '../../../../injection_container.dart';
-import 'lyrics_bloc.dart';
+import '../../../../../injection_container.dart';
+import 'bloc/lyrics_bloc.dart';
 import 'lyrics_list.dart';
 
 class LyricsPage extends StatelessWidget {

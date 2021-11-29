@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:itg_lyrics/src/core/custom_button.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_page.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/lyrics_page.dart';
 
 import '../settings/settings_view.dart';
 

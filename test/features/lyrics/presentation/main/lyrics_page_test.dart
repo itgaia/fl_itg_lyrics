@@ -11,22 +11,22 @@ import 'package:itg_lyrics/src/features/lyrics/data/lyrics_remote_datasource.dar
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_repository_impl.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/get_lyrics_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_repository.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_list.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/lyrics_list.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../lib/injection_container.dart' as di;
+import '../../../../../lib/injection_container.dart' as di;
 import 'package:itg_lyrics/src/app.dart';
 import 'package:itg_lyrics/src/features/home/home_page.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_bloc.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/lyrics_page.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/lyrics_page.dart';
 import 'package:itg_lyrics/src/features/settings/settings_controller.dart';
 import 'package:itg_lyrics/src/features/settings/settings_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../../test_helper.dart';
-import '../lyrics_test_helper.dart';
+import '../../../../test_helper.dart';
+import '../../lyrics_test_helper.dart';
 
 // class MockLyricsBloc extends MockBloc<LyricsEvent, LyricsState> implements LyricsBloc {}
 // class LyricsStateFake extends Fake implements LyricsState {}

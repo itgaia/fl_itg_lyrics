@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:itg_lyrics/src/features/home/home_page.dart';
 import '../injection_container.dart';
-import 'features/lyrics/presentation/lyrics_page.dart';
+import 'features/lyrics/presentation/main/lyrics_page.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
 

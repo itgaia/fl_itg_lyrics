@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/widgets/bottom_loader.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/widgets/loading_widget.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/widgets/lyrics_display.dart';
-import 'package:itg_lyrics/src/features/lyrics/presentation/widgets/lyrics_list_item.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/widgets/bottom_loader.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/widgets/loading_widget.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/widgets/lyrics_display.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/main/widgets/lyrics_list_item.dart';
 
-import 'lyrics_bloc.dart';
+import 'bloc/lyrics_bloc.dart';
 
 class LyricsList extends StatefulWidget {
   @override
