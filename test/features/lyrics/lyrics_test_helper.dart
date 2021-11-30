@@ -20,7 +20,7 @@ List<LyricsModel> fixtureLyricsCached() => (json.decode(fixture('lyrics_cached.j
 
 List<LyricsModel> lyricsTestData({int count = 5}) => List.generate(
   count,
-  (i) => LyricsModel(id: i+1, title: 'test song ${i+1}', artist: 'test artist ${i+1}')
+  (i) => LyricsModel(id: i+1, title: 'test song ${i+1}', artist: 'test artist ${i+1}', content: 'test content ${i+1}')
 );
 
 

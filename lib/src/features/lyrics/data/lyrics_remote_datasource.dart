@@ -10,12 +10,18 @@ import 'lyrics_model.dart';
 abstract class LyricsRemoteDataSource {
   /// Throws a [ServerException] for all error codes.
   Future<List<LyricsEntity>> getLyrics();
+  Future<List<LyricsEntity>> searchLyrics(query);
 }
 
 class LyricsRemoteDataSourceImpl implements LyricsRemoteDataSource {
   final http.Client client;
 
   LyricsRemoteDataSourceImpl({required this.client});
+
+  @override
+  Future<List<LyricsModel>> searchLyrics(query) async {
+    return Future.value([]);
+  }
 
   @override
   Future<List<LyricsModel>> getLyrics() async =>
@@ -36,6 +42,7 @@ class LyricsRemoteDataSourceImpl implements LyricsRemoteDataSource {
           id: json['id'] as int,
           title: json['title'] as String,
           artist: json['artist'] as String,
+          content: json['content'] as String,
         );
       }).toList();
     } else {

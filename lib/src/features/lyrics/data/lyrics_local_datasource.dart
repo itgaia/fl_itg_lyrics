@@ -8,6 +8,10 @@ import 'lyrics_model.dart';
 
 abstract class LyricsLocalDataSource {
   Future<List<LyricsEntity>> getLastLyrics();
+  Future<List<LyricsEntity>> getLyrics(query);
+  Future<void> removeLyric(id);
+  Future<LyricsModel> addLyric(lyric);
+  Future<LyricsModel> editLyric(lyric);
 
   Future<void> cacheLyrics(List<LyricsModel> lyricsToCache);
 }
@@ -18,6 +22,27 @@ class LyricsLocalDataSourceImpl implements LyricsLocalDataSource {
   final SharedPreferences sharedPreferences;
 
   LyricsLocalDataSourceImpl({required this.sharedPreferences});
+
+  @override
+  Future<List<LyricsModel>> getLyrics(query) {
+    return Future.value([]);
+  }
+
+  @override
+  Future<void> removeLyric(id) {
+    return Future.value(null);
+  }
+
+  @override
+  Future<LyricsModel> addLyric(lyric) {
+    return Future.value(null);
+  }
+
+  @override
+  Future<LyricsModel> editLyric(lyric) {
+    return Future.value(null);
+  }
+
 
   @override
   Future<List<LyricsModel>> getLastLyrics() {
@@ -33,6 +58,7 @@ class LyricsLocalDataSourceImpl implements LyricsLocalDataSource {
           id: json['id'] as int,
           title: json['title'] as String,
           artist: json['artist'] as String,
+          content: json['content'] as String,
         );
       }).toList()
       );

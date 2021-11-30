@@ -5,13 +5,15 @@ class LyricsModel extends LyricsEntity {
     required int id,
     required String title,
     required String artist,
-  }) : super(id: id, title: title, artist: artist);
+    required String content,
+  }) : super(id: id, title: title, artist: artist, content: content);
 
   factory LyricsModel.fromJson(Map<String, dynamic> json) {
     return LyricsModel(
       id: (json['id'] as num).toInt(),
       title: json['title'].toString(),
       artist: json['artist'].toString(),
+      content: json['content'].toString(),
     );
   }
 
@@ -20,6 +22,7 @@ class LyricsModel extends LyricsEntity {
       'id': id,
       'title': title,
       'artist': artist,
+      'content': content,
     };
   }
 }

@@ -39,4 +39,29 @@ class LyricsRepositoryImpl implements LyricsRepository {
       }
     }
   }
+
+  @override
+  Future<Either<Failure, List<LyricsEntity>>> searchLyrics(String query) async {
+    final networkList = await remoteDataSource.searchLyrics(query);
+    final localList = await localDataSource.getLyrics(query);
+    return Right(List<LyricsEntity>.empty(growable: true)
+      ..addAll(networkList)
+      ..addAll(localList));
+  }
+
+  @override
+  Future<Either<Failure, LyricsModel>> addLyric(LyricsModel lyric) async {
+    return Right(await localDataSource.addLyric(lyric));
+  }
+
+  @override
+  Future<Either<Failure, LyricsModel>> editLyric(LyricsModel lyric) async {
+    return Right(await localDataSource.editLyric(lyric));
+  }
+
+  @override
+  Future<Either<Failure, void>> removeLyric(int id) async {
+    await localDataSource.removeLyric(id);
+    return Right(Future.value(null));
+  }
 }
