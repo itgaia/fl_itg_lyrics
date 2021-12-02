@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:itg_lyrics/src/core/custom_button.dart';
 import 'package:itg_lyrics/src/features/lyrics/presentation/main/lyrics_page.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/search/lyrics_search_page.dart';
 
 import '../settings/settings_view.dart';
 
 class HomePage extends StatelessWidget {
   static const keyButtonLyricsPage = Key('buttonLyricsPage');
+  static const keyButtonLyricsSearchPage = Key('buttonLyricsSearchPage');
 
   const HomePage({Key? key}) : super(key: key);
 
@@ -38,6 +40,17 @@ class HomePage extends StatelessWidget {
               );
             },
             key: keyButtonLyricsPage
+          ),
+          CustomButton(
+            title: 'Lyrics Search Page',
+            color: Colors.cyan,
+            onPressed: () {
+              Navigator.restorablePushNamed(
+                context,
+                LyricsSearchPage.routeName,
+              );
+            },
+            key: keyButtonLyricsSearchPage
           ),
         ],
       ),

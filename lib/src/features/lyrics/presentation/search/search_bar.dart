@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../itg_localization.dart';
 import 'bloc/lyrics_search.dart';
 
@@ -16,7 +17,8 @@ class _SearchBarState extends State<SearchBar> {
   @override
   void initState() {
     super.initState();
-    _lyricSearchBloc = BlocProvider.of<LyricsSearchBloc>(context);
+    // _lyricSearchBloc = BlocProvider.of<LyricsSearchBloc>(context);
+    _lyricSearchBloc = sl<LyricsSearchBloc>();
   }
 
   @override
@@ -24,7 +26,7 @@ class _SearchBarState extends State<SearchBar> {
     return TextField(
       controller: _lyricSearchController,
       onChanged: (text) {
-        _lyricSearchBloc.add(TextChanged(query: text));
+        _lyricSearchBloc.add(LyricsSearchTextChangedEvent(query: text));
       },
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.search), hintText: ItgLocalization.tr('search lyrics')),

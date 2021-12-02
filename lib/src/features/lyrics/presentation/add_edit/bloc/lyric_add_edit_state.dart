@@ -2,51 +2,51 @@ import 'package:equatable/equatable.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_model.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 
-abstract class LyricAddEditState extends Equatable {
+abstract class LyricsAddEditState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class StateShowLyric extends LyricAddEditState {
+class LyricsAddEditShowLyricState extends LyricsAddEditState {
   @override
-  String toString() => 'SearchStateEmpty';
+  String toString() => 'LyricsAddEditShowLyricState';
 }
 
-class StateLoading extends LyricAddEditState {
+class LyricsAddEditLoadingState extends LyricsAddEditState {
   @override
-  String toString() => 'SearchStateLoading';
+  String toString() => 'LyricsAddEditLoadingState';
 }
 
-class AddLyricStateSuccess extends LyricAddEditState {
+class LyricsAddEditAddLyricSuccessState extends LyricsAddEditState {
   final LyricsEntity lyric;
 
-  AddLyricStateSuccess(this.lyric);
+  LyricsAddEditAddLyricSuccessState(this.lyric);
 
   @override
   List<Object> get props => [lyric];
 
   @override
-  String toString() => 'AddLyricSuccess {lyric: $lyric }';
+  String toString() => 'LyricsAddEditAddLyricSuccessState {lyric: $lyric }';
 }
 
-class AddLyricStateFailure extends LyricAddEditState {
+class LyricsAddEditAddLyricFailureState extends LyricsAddEditState {
   @override
-  String toString() => 'AddLyricStateFailure';
+  String toString() => 'LyricsAddEditAddLyricFailureState';
 }
 
-class EditLyricStateSuccess extends LyricAddEditState {
-  final LyricsModel lyric;
+class LyricsAddEditEditLyricSuccessState extends LyricsAddEditState {
+  final LyricsEntity lyric;
 
-  EditLyricStateSuccess(this.lyric);
+  LyricsAddEditEditLyricSuccessState(this.lyric);
 
   @override
   List<Object> get props => [lyric];
 
   @override
-  String toString() => 'EditLyricSuccess {lyric: $lyric }';
+  String toString() => 'LyricsAddEditEditLyricSuccessState {lyric: $lyric }';
 }
 
-class EditLyricStateFailure extends LyricAddEditState {
+class LyricsAddEditEditLyricFailureState extends LyricsAddEditState {
   @override
-  String toString() => 'EditLyricStateFailure';
+  String toString() => 'LyricsAddEditEditLyricFailureState';
 }

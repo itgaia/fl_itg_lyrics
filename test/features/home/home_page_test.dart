@@ -17,7 +17,8 @@ void main() {
     testWidgets('button for lyrics', (widgetTester) async {
       await widgetTester.pumpWidget(await createWidgetUnderTest());
       // var button = CustomButton(title: 'aaa', color: Colors.cyan, onPressed: () {},);
-      expect(find.byType(CustomButton), findsOneWidget);
+      // expect(find.byType(CustomButton), findsOneWidget);
+      expect(find.byType(CustomButton), findsNWidgets(2));
       // expect(find.byWidget(button), findsOneWidget);   // TODO: how can I find a specific button???
       expect(find.byKey(const Key('buttonLyricsPage')), findsOneWidget);
       expect(find.text('Lyrics Page'), findsOneWidget);

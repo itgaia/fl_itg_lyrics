@@ -29,18 +29,18 @@ class LyricsLocalDataSourceImpl implements LyricsLocalDataSource {
   }
 
   @override
-  Future<void> removeLyric(id) {
-    return Future.value(null);
+  Future<void> removeLyric(id) async {
+    // return Future.value(null);
   }
 
   @override
   Future<LyricsModel> addLyric(lyric) {
-    return Future.value(null);
+    return Future.value(LyricsModel(id: 11, title: 'title 11', artist: 'artist 11', content: 'content 11'));
   }
 
   @override
   Future<LyricsModel> editLyric(lyric) {
-    return Future.value(null);
+    return Future.value(lyric);
   }
 
 

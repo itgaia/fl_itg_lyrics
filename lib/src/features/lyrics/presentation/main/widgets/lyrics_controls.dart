@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
 
+import '../../../../../../injection_container.dart';
+
 class LyricsControls extends StatefulWidget {
   const LyricsControls({
     Key? key,
@@ -29,6 +31,7 @@ class _LyricsControlsState extends State<LyricsControls> {
 
   void dispatchLyrics() {
     controller.clear();
-    BlocProvider.of<LyricsBloc>(context).add(GetLyricsEvent());
+    // BlocProvider.of<LyricsBloc>(context).add(GetLyricsEvent());
+    sl<LyricsBloc>().add(GetLyricsEvent());
   }
 }

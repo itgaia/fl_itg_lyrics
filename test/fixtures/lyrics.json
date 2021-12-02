@@ -2,16 +2,19 @@
   {
     "id": 1,
     "title": "test song 1",
-    "artist": "test artist 1"
+    "artist": "test artist 1",
+    "content": "test content 1"
   },
   {
     "id": 2,
     "title": "test song 2",
-    "artist": "test artist 2"
+    "artist": "test artist 2",
+    "content": "test content 2"
   },
   {
     "id": 3,
     "title": "test song 3",
-    "artist": "test artist 3"
+    "artist": "test artist 3",
+    "content": "test content 3"
   }
 ]

@@ -9,9 +9,15 @@ import 'package:itg_lyrics/src/core/util/input_converter.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_local_datasource.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_remote_datasource.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_repository_impl.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/add_lyric_usecase.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/edit_lyric_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/get_lyrics_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_repository.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/remove_lyric_usecase.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/search_lyrics_usecase.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/add_edit/bloc/lyric_add_edit.dart';
 import 'package:itg_lyrics/src/features/lyrics/presentation/main/bloc/lyrics_bloc.dart';
+import 'package:itg_lyrics/src/features/lyrics/presentation/search/bloc/lyrics_search.dart';
 import 'package:itg_lyrics/src/features/settings/settings_controller.dart';
 import 'package:itg_lyrics/src/features/settings/settings_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,9 +40,16 @@ Future<void> init() async {
 
   //! Features - Number Trivia
   sl.registerFactory(() => LyricsBloc(lyrics: sl()));
+  sl.registerFactory(() => LyricsSearchBloc(
+    searchLyricsUsecase: sl(), removeLyricUsecase: sl(), lyricAddEditBloc: sl()));
+  sl.registerFactory(() => LyricAddEditBloc(addLyricUsecase: sl(), editLyricUsecase: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetLyricsUsecase(sl()));
+  sl.registerLazySingleton(() => SearchLyricsUsecase(sl()));
+  sl.registerLazySingleton(() => RemoveLyricUsecase(sl()));
+  sl.registerLazySingleton(() => AddLyricUsecase(sl()));
+  sl.registerLazySingleton(() => EditLyricUsecase(sl()));
 
   // Repository
   sl.registerLazySingleton<LyricsRepository>(

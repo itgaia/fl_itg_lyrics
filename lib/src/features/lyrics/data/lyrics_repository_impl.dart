@@ -61,7 +61,8 @@ class LyricsRepositoryImpl implements LyricsRepository {
 
   @override
   Future<Either<Failure, void>> removeLyric(int id) async {
+  // Future<void> removeLyric(int id) async {
     await localDataSource.removeLyric(id);
-    return Right(Future.value(null));
+    return Right(Future.value());
   }
 }

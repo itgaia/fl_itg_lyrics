@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:itg_lyrics/src/features/home/home_page.dart';
 import '../injection_container.dart';
 import 'features/lyrics/presentation/main/lyrics_page.dart';
+import 'features/lyrics/presentation/search/lyrics_search_page.dart';
 import 'features/settings/settings_controller.dart';
 import 'features/settings/settings_view.dart';
 
@@ -71,6 +72,8 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
+                  case LyricsSearchPage.routeName:
+                    return LyricsSearchPage(addLyricUsecase: sl(), searchLyricsUsecase: sl(), removeLyricUsecase: sl(), editLyricUsecase: sl(),);
                   case LyricsPage.routeName:
                   // default:
                     return const LyricsPage(title: 'Lyrics');

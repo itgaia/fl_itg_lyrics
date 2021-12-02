@@ -12,6 +12,7 @@ class RemoveLyricUsecase implements UseCase<void, int> {
 
   @override
   Future<Either<Failure, void>> call(int id) async {
-    return repository.removeLyric(id);
+    print('>>> RemoveLyricUsecase.call - id: $id');
+    return await repository.removeLyric(id);
   }
 }

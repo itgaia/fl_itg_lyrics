@@ -5,16 +5,18 @@ import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/network_lyric.dart';
 import 'package:itg_lyrics/src/features/lyrics/presentation/details/lyric_details_screen.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../itg_localization.dart';
 import 'bloc/lyrics_search.dart';
 
 class LyricsSearchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LyricsSearchBloc, LyricSearchState>(
-      bloc: BlocProvider.of<LyricsSearchBloc>(context),
-      builder: (BuildContext context, LyricSearchState state) {
-        if (state is SearchStateLoading) {
+    return BlocBuilder<LyricsSearchBloc, LyricsSearchState>(
+      // bloc: BlocProvider.of<LyricsSearchBloc>(context),
+      bloc: sl<LyricsSearchBloc>(),
+      builder: (BuildContext context, LyricsSearchState state) {
+        if (state is LyricsSearchLoadingState) {
           return const Padding(
             padding: EdgeInsets.only(top: 16.0),
             child: Center(
@@ -22,10 +24,10 @@ class LyricsSearchList extends StatelessWidget {
             ),
           );
         }
-        if (state is SearchStateError) {
+        if (state is LyricsSearchErrorState) {
           return Text(state.error);
         }
-        if (state is SearchStateSuccess) {
+        if (state is LyricsSearchSuccessState) {
           return state.lyrics.isEmpty
               ? Text(ItgLocalization.tr('empty list'))
               : Expanded(
@@ -77,9 +79,10 @@ class _LyricSearchResultItem extends StatelessWidget {
               color: Colors.red,
             ),
             onDismissed: (direction) {
-              BlocProvider.of<LyricsSearchBloc>(context).add(
-                RemoveLyric(lyricID: lyric.id),
-              );
+              // BlocProvider.of<LyricsSearchBloc>(context).add(
+              //   LyricsSearchLyricRemovedEvent(lyricID: lyric.id),
+              // );
+              sl<LyricsSearchBloc>().add(LyricsSearchLyricRemovedEvent(lyricID: lyric.id));
             },
             key: Key(UniqueKey().toString()),
             child: _getLyricDetailsLayout(context),

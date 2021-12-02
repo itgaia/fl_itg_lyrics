@@ -13,6 +13,7 @@ class AddLyricUsecase implements UseCase<LyricsEntity, LyricsModel> {
 
   @override
   Future<Either<Failure, LyricsEntity>> call(LyricsModel lyric) async {
+    print('>>> AddLyricUsecase.call - lyric: $lyric');
     return repository.addLyric(lyric);
   }
 }

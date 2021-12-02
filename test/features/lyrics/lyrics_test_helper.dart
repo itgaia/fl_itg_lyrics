@@ -26,7 +26,7 @@ List<LyricsModel> lyricsTestData({int count = 5}) => List.generate(
 
 List<Map<String, dynamic>> lyricsTestMapData({int count = 5}) => List.generate(
   count,
-  (i) => {'id': i+1, 'title': 'test song ${i+1}', 'artist': 'test artist ${i+1}'}
+  (i) => {'id': i+1, 'title': 'test song ${i+1}', 'artist': 'test artist ${i+1}', 'content': 'test content ${i+1}'}
 );
 
 void arrangeReturnsNLyrics(mockGetLyricsUsecase, {int count = 5}) {

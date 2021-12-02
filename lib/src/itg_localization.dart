@@ -93,7 +93,7 @@ class ItgLocalization {
 
   static String tr(String text, {String lang = ''}) {
     if (lang == '') lang = language;
-    String translated = _localizedValues[lang]![text]!;
+    String? translated = _localizedValues[lang]![text];
     if (translated == null) translated = text;
     // if (text == 'appTitle') {
     //   itgLogVerbose('[ItgLocalization.tr] _localizedValues[$lang]: ${_localizedValues[lang]}');

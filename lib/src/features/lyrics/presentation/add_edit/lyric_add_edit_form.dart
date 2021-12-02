@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:itg_lyrics/src/core/buttons.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_model.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 
+import '../../../../../injection_container.dart';
 import '../../../../itg_localization.dart';
 import 'bloc/lyric_add_edit.dart';
 
 class LyricAddForm extends StatefulWidget {
-  final LyricsModel? lyric;
+  final LyricsEntity? lyric;
 
   LyricAddForm({this.lyric});
 
@@ -25,22 +27,23 @@ class LyricAddState extends State<LyricAddForm> {
 
   late LyricAddEditBloc _lyricAddEditBloc;
 
-  final LyricsModel? _lyric;
+  final LyricsEntity? _lyric;
 
   LyricAddState(this._lyric);
 
   @override
   void initState() {
     super.initState();
-    _lyricAddEditBloc = BlocProvider.of<LyricAddEditBloc>(context);
+    // _lyricAddEditBloc = BlocProvider.of<LyricAddEditBloc>(context);
+    _lyricAddEditBloc = sl<LyricAddEditBloc>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LyricAddEditBloc, LyricAddEditState>(
+    return BlocListener<LyricAddEditBloc, LyricsAddEditState>(
       bloc: _lyricAddEditBloc,
       listener: (context, state) {
-        if (state is AddLyricStateSuccess || state is EditLyricStateSuccess) {
+        if (state is LyricsAddEditAddLyricSuccessState || state is LyricsAddEditEditLyricSuccessState) {
           Navigator.pop(context);
         }
       },

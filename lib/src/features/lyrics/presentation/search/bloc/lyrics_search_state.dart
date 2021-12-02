@@ -1,42 +1,42 @@
 import 'package:equatable/equatable.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 
-abstract class LyricSearchState extends Equatable {
+abstract class LyricsSearchState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class SearchStateEmpty extends LyricSearchState {
+class LyricsSearchEmptyState extends LyricsSearchState {
   @override
-  String toString() => 'SearchStateEmpty';
+  String toString() => 'LyricsSearchEmptyState';
 }
 
-class SearchStateLoading extends LyricSearchState {
+class LyricsSearchLoadingState extends LyricsSearchState {
   @override
-  String toString() => 'SearchStateLoading';
+  String toString() => 'LyricsSearchLoadingState';
 }
 
-class SearchStateSuccess extends LyricSearchState {
+class LyricsSearchSuccessState extends LyricsSearchState {
   final List<LyricsEntity> lyrics;
   final String query;
 
-  SearchStateSuccess(this.lyrics, this.query);
+  LyricsSearchSuccessState(this.lyrics, this.query);
 
   @override
   List<Object> get props => [lyrics, query];
 
   @override
-  String toString() => 'SearchStateSuccess { lyrics: ${lyrics.length} }';
+  String toString() => 'LyricsSearchSuccessState { lyrics: ${lyrics.length} }';
 }
 
-class SearchStateError extends LyricSearchState {
+class LyricsSearchErrorState extends LyricsSearchState {
   final String error;
 
-  SearchStateError(this.error);
+  LyricsSearchErrorState(this.error);
 
   @override
   List<Object> get props => [error];
 
   @override
-  String toString() => 'SearchStateError { error: $error }';
+  String toString() => 'LyricsSearchErrorState { error: $error }';
 }

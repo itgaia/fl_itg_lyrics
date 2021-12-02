@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:itg_lyrics/src/core/loading.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_model.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 import 'package:itg_lyrics/src/itg_localization.dart';
 
+import '../../../../../injection_container.dart';
 import 'bloc/lyric_add_edit.dart';
 import 'lyric_add_edit_form.dart';
 
 class LyricAddScreen extends StatefulWidget {
-  final LyricsModel? lyric;
+  final LyricsEntity? lyric;
 
   LyricAddScreen({this.lyric});
 
@@ -19,7 +21,7 @@ class LyricAddScreen extends StatefulWidget {
 }
 
 class LyricAddScreenState extends State<StatefulWidget> {
-  final LyricsModel? lyric;
+  final LyricsEntity? lyric;
 
   LyricAddScreenState({this.lyric});
 
@@ -30,8 +32,9 @@ class LyricAddScreenState extends State<StatefulWidget> {
         title: Text(lyric?.id == null ? ItgLocalization.tr('add lyric') : ItgLocalization.tr('edit')),
       ),
       body: BlocBuilder(
-        bloc: BlocProvider.of<LyricAddEditBloc>(context),
-        builder: (BuildContext context, LyricAddEditState state) {
+        // bloc: BlocProvider.of<LyricAddEditBloc>(context),
+        bloc: sl<LyricAddEditBloc>(),
+        builder: (BuildContext context, LyricsAddEditState state) {
           return Stack(
             children: <Widget>[
               Container(
@@ -41,7 +44,7 @@ class LyricAddScreenState extends State<StatefulWidget> {
                 alignment: Alignment.center,
                 child: Visibility(
                   child: BaseLoadingView(),
-                  visible: state is StateLoading,
+                  visible: state is LyricsAddEditLoadingState,
                 ),
               )
             ],

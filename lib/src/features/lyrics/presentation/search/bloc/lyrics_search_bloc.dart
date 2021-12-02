@@ -5,41 +5,50 @@ import 'package:itg_lyrics/src/core/constants.dart';
 import 'package:itg_lyrics/src/features/lyrics/api/search_result_error.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_repository.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/remove_lyric_usecase.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/search_lyrics_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/presentation/add_edit/bloc/lyric_add_edit.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'lyrics_search.dart';
 
-class LyricsSearchBloc extends Bloc<LyricSearchEvent, LyricSearchState> {
-  final LyricsRepository lyricsRepository;
+class LyricsSearchBloc extends Bloc<LyricsSearchEvent, LyricsSearchState> {
+  // final LyricsRepository lyricsRepository;
+  final SearchLyricsUsecase searchLyricsUsecase;
+  final RemoveLyricUsecase removeLyricUsecase;
   final LyricAddEditBloc lyricAddEditBloc;
 
   late StreamSubscription addEditBlocSubscription;
 
   LyricsSearchBloc({
-    required this.lyricsRepository,
+    // required this.lyricsRepository,
+    required this.searchLyricsUsecase,
+    required this.removeLyricUsecase,
     required this.lyricAddEditBloc,
-  }) : super(SearchStateEmpty()) {
+  }) : super(LyricsSearchEmptyState()) {
+    print('>>> LyricsSearchBloc - lyricAddEditBloc: $lyricAddEditBloc');
     addEditBlocSubscription = lyricAddEditBloc.stream.listen((lyricAddEditState) {
-      if (state is SearchStateSuccess) {
-        if (lyricAddEditState is EditLyricStateSuccess) {
-          add(LyricUpdated(lyric: lyricAddEditState.lyric));
-        } else if (lyricAddEditState is AddLyricStateSuccess) {
-          add(LyricAdded(lyric: lyricAddEditState.lyric));
+      print('>>> LyricsSearchBloc/addEditBlocSubscription - lyricAddEditState: $lyricAddEditState');
+      if (state is LyricsSearchSuccessState) {
+        if (lyricAddEditState is LyricsAddEditEditLyricSuccessState) {
+          add(LyricsSearchLyricUpdatedEvent(lyric: lyricAddEditState.lyric));
+        } else if (lyricAddEditState is LyricsAddEditAddLyricSuccessState) {
+          add(LyricsSearchLyricAddedEvent(lyric: lyricAddEditState.lyric));
         }
       }
     });
   }
 
   @override
-  Stream<Transition<LyricSearchEvent, LyricSearchState>> transformEvents(
-    Stream<LyricSearchEvent> events,
-    TransitionFunction<LyricSearchEvent, LyricSearchState> transitionFn,
+  Stream<Transition<LyricsSearchEvent, LyricsSearchState>> transformEvents(
+    Stream<LyricsSearchEvent> events,
+    TransitionFunction<LyricsSearchEvent, LyricsSearchState> transitionFn,
   ) {
-    final nonDebounceStream = events.where((event) => event is! TextChanged);
+    print('>>> LyricsSearchBloc.transformEvents - events: $events');
+    final nonDebounceStream = events.where((event) => event is! LyricsSearchTextChangedEvent);
 
     final debounceStream =
-        events.where((event) => event is TextChanged).debounceTime(
+        events.where((event) => event is LyricsSearchTextChangedEvent).debounceTime(
               Duration(milliseconds: DEFAULT_SEARCH_DEBOUNCE),
             );
 
@@ -50,57 +59,63 @@ class LyricsSearchBloc extends Bloc<LyricSearchEvent, LyricSearchState> {
   }
 
   @override
-  Stream<LyricSearchState> mapEventToState(LyricSearchEvent event) async* {
-    if (event is TextChanged) {
+  Stream<LyricsSearchState> mapEventToState(LyricsSearchEvent event) async* {
+    print('>>> LyricsSearchBloc.mapEventToState - event: $event');
+    if (event is LyricsSearchTextChangedEvent) {
       yield* _mapLyricSearchTextChangedToState(event);
     }
-    if (event is RemoveLyric) {
+    if (event is LyricsSearchLyricRemovedEvent) {
       yield* _mapLyricRemoveToState(event);
     }
-    if (event is LyricUpdated) {
+    if (event is LyricsSearchLyricUpdatedEvent) {
       yield* _mapLyricUpdateToState(event);
     }
-    if (event is LyricAdded) {
+    if (event is LyricsSearchLyricAddedEvent) {
       yield* _mapLyricAddedToState(event);
     }
   }
 
-  Stream<LyricSearchState> _mapLyricSearchTextChangedToState(
-      TextChanged event) async* {
+  Stream<LyricsSearchState> _mapLyricSearchTextChangedToState(
+      LyricsSearchTextChangedEvent event) async* {
+    print('>>> LyricsSearchBloc._mapLyricSearchTextChangedToState - event: $event');
     final String searchQuery = event.query;
     if (searchQuery.isEmpty) {
-      yield SearchStateEmpty();
+      yield LyricsSearchEmptyState();
     } else {
-      yield SearchStateLoading();
+      yield LyricsSearchLoadingState();
       try {
-        final failureOrLyrics = await lyricsRepository.searchLyrics(searchQuery);
+        // final failureOrLyrics = await lyricsRepository.searchLyrics(searchQuery);
+        final failureOrLyrics = await searchLyricsUsecase(searchQuery);
         if (failureOrLyrics.isRight()) {
-          yield SearchStateSuccess(failureOrLyrics.toOption().toNullable()!, searchQuery);
+          yield LyricsSearchSuccessState(failureOrLyrics.toOption().toNullable()!, searchQuery);
         } else {
-          yield SearchStateError('Error on search!');
+          yield LyricsSearchErrorState('Error on search!');
         }
       } catch (error) {
         yield error is SearchResultError
-            ? SearchStateError(error.message)
-            : SearchStateError("Default error");
+            ? LyricsSearchErrorState(error.message)
+            : LyricsSearchErrorState("Default error");
       }
     }
   }
 
-  Stream<LyricSearchState> _mapLyricRemoveToState(RemoveLyric event) async* {
-    await lyricsRepository.removeLyric(event.lyricID);
-    if (state is SearchStateSuccess) {
-      SearchStateSuccess searchState = state as SearchStateSuccess;
-      searchState.lyrics.removeWhere((lyric) {
-        return lyric.id == event.lyricID;
-      });
-      yield SearchStateSuccess(searchState.lyrics, searchState.query);
+  Stream<LyricsSearchState> _mapLyricAddedToState(LyricsSearchLyricAddedEvent event) async* {
+    print('>>> LyricsSearchBloc._mapLyricAddedToState - event: $event');
+    if (state is LyricsSearchSuccessState) {
+      LyricsSearchSuccessState successState = state as LyricsSearchSuccessState;
+      List<LyricsEntity> updatedList = List.from(successState.lyrics);
+
+      if (event.lyric.isInQuery(successState.query)) {
+        updatedList.insert(0, event.lyric);
+        yield LyricsSearchSuccessState(updatedList, successState.query);
+      }
     }
   }
 
-  Stream<LyricSearchState> _mapLyricUpdateToState(LyricUpdated event) async* {
-    if (state is SearchStateSuccess) {
-      SearchStateSuccess successState = state as SearchStateSuccess;
+  Stream<LyricsSearchState> _mapLyricUpdateToState(LyricsSearchLyricUpdatedEvent event) async* {
+    print('>>> LyricsSearchBloc._mapLyricUpdateToState - event: $event');
+    if (state is LyricsSearchSuccessState) {
+      LyricsSearchSuccessState successState = state as LyricsSearchSuccessState;
       List<LyricsEntity> updatedList = successState.lyrics;
       if (event.lyric.isInQuery(successState.query)) {
         updatedList = updatedList.map((lyric) {
@@ -109,19 +124,25 @@ class LyricsSearchBloc extends Bloc<LyricSearchEvent, LyricSearchState> {
       } else {
         updatedList.removeWhere((lyric) => lyric.id == event.lyric.id);
       }
-      yield SearchStateSuccess(updatedList, successState.query);
+      yield LyricsSearchSuccessState(updatedList, successState.query);
     }
   }
 
-  Stream<LyricSearchState> _mapLyricAddedToState(LyricAdded event) async* {
-    if (state is SearchStateSuccess) {
-      SearchStateSuccess successState = state as SearchStateSuccess;
-      List<LyricsEntity> updatedList = List.from(successState.lyrics);
-
-      if (event.lyric.isInQuery(successState.query)) {
-        updatedList.insert(0, event.lyric);
-        yield SearchStateSuccess(updatedList, successState.query);
-      }
+  Stream<LyricsSearchState> _mapLyricRemoveToState(LyricsSearchLyricRemovedEvent event) async* {
+    print('>>> LyricsSearchBloc._mapLyricRemoveToState - event: $event');
+    // await lyricsRepository.removeLyric(event.lyricID);
+    await removeLyricUsecase(event.lyricID);
+    print('>>> LyricsSearchBloc._mapLyricRemoveToState - state: $state');
+    if (state is LyricsSearchSuccessState) {
+      LyricsSearchSuccessState searchState = state as LyricsSearchSuccessState;
+      print('>>> LyricsSearchBloc._mapLyricRemoveToState - bef removeWhere - searchState.lyrics: ${searchState.lyrics}');
+      searchState.lyrics.removeWhere((lyric) {
+        print('>>> LyricsSearchBloc._mapLyricRemoveToState - removeWhere - lyric: $lyric, event.lyricID: ${event.lyricID}, lyric.id: ${lyric.id}');
+        return lyric.id == event.lyricID;
+      });
+      print('>>> LyricsSearchBloc._mapLyricRemoveToState - aft removeWhere - searchState.lyrics: ${searchState.lyrics}');
+      print('>>> LyricsSearchBloc._mapLyricRemoveToState - searchState.lyrics: ${searchState.lyrics}, searchState.query: ${searchState.query}');
+      yield LyricsSearchSuccessState(searchState.lyrics, searchState.query);
     }
   }
 
