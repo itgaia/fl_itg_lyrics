@@ -12,6 +12,7 @@ class SearchLyricsUsecase implements UseCase<List<LyricsEntity>, String> {
 
   @override
   Future<Either<Failure, List<LyricsEntity>>> call(String query) async {
+    print('>>> SearchLyricsUsecase - query: $query');
     return repository.searchLyrics(query);
   }
 }

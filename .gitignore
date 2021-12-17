@@ -46,10 +46,14 @@ app.*.map.json
 /android/app/release
 
 # ITG additions
+
 .notes
 .idea
 .DS_Store
 /.itgsetup.log
+
+## Private info
+**/lib/**/secrets.dart
 app_private_config.dart
 app_private_config.yaml
 

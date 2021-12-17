@@ -47,6 +47,35 @@ void main() {
     });
   });
 
+  group('getLyrics', () {
+    final tLyricsModel = fixtureLyricsCached();
+
+    test(
+        'should return Lyrics from SharedPreferences when there is one in cache',
+        () async {
+      // arrange
+      when(() => mockSharedPreferences.getString(any()))
+        .thenReturn(fixture('lyrics_cached.json'));
+      // act
+      final result = await dataSource.getLyrics('a');
+      // assert
+      verify(() => mockSharedPreferences.getString(cachedLyrics));
+      expect(result, equals(tLyricsModel));
+      // TODO: check that filter is working
+    });
+
+    test('should throw a CacheException when there is not a cached value',
+        () async {
+      // arrange
+      when(() => mockSharedPreferences.getString(any()))
+        .thenThrow(CacheException());
+      // act
+      final call = dataSource.getLyrics;
+      // assert
+      expect(() => call('a'), throwsA(isInstanceOf<CacheException>()));
+    });
+  });
+
   group('cacheLyrics', () {
     final tLyricsModel = lyricsTestData(count: 3);
 

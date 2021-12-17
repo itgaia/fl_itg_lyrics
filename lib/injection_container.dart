@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:itg_lyrics/src/app_config.dart';
 import 'package:itg_lyrics/src/app_helper.dart';
+import 'package:itg_lyrics/src/core/debug.dart';
 import 'package:itg_lyrics/src/core/network/network_info.dart';
 import 'package:itg_lyrics/src/core/util/input_converter.dart';
 import 'package:itg_lyrics/src/features/lyrics/data/lyrics_local_datasource.dart';
@@ -28,7 +29,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   if (systemInjectionInit) return;
-  print('injection_container/init - start...');
+  itgLogVerbose('injection_container/init - start...');
 
   MockDataConnectionChecker mockDataConnectionChecker = MockDataConnectionChecker();
   final tHasConnectionFuture = Future.value(true);
@@ -76,7 +77,7 @@ Future<void> init() async {
   sl.registerSingletonAsync(() async => sharedPreferences);
   sl.registerLazySingleton(() => http.Client());
   if (kIsWeb == true) {
-    print('>>>>>> [injection_container.init] Warning! DataConnectionChecker is not compatible with Web! Use mocked object instead! <<<<<<');
+    itgLogVerbose('>>>>>> [injection_container.init] Warning! DataConnectionChecker is not compatible with Web! Use mocked object instead! <<<<<<');
     // TODO: temp-fix - DataConnectionChecker is not compatible with Web
   }
   sl.registerLazySingleton(() => kIsWeb ? mockDataConnectionChecker : DataConnectionChecker());

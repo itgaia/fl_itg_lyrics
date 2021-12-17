@@ -12,10 +12,12 @@ import 'bloc/lyrics_search.dart';
 class LyricsSearchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('LyricsSearchList - start build...');
     return BlocBuilder<LyricsSearchBloc, LyricsSearchState>(
       // bloc: BlocProvider.of<LyricsSearchBloc>(context),
       bloc: sl<LyricsSearchBloc>(),
       builder: (BuildContext context, LyricsSearchState state) {
+        print('LyricsSearchList - state: $state');
         if (state is LyricsSearchLoadingState) {
           return const Padding(
             padding: EdgeInsets.only(top: 16.0),

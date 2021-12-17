@@ -25,7 +25,8 @@ class LyricsLocalDataSourceImpl implements LyricsLocalDataSource {
 
   @override
   Future<List<LyricsModel>> getLyrics(query) {
-    return Future.value([]);
+    print('>>> LyricsLocalDataSourceImpl.getLyrics - query: $query');
+    return getLastLyrics();
   }
 
   @override
@@ -42,7 +43,6 @@ class LyricsLocalDataSourceImpl implements LyricsLocalDataSource {
   Future<LyricsModel> editLyric(lyric) {
     return Future.value(lyric);
   }
-
 
   @override
   Future<List<LyricsModel>> getLastLyrics() {

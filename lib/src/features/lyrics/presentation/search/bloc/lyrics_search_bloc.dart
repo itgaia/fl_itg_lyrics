@@ -49,7 +49,7 @@ class LyricsSearchBloc extends Bloc<LyricsSearchEvent, LyricsSearchState> {
 
     final debounceStream =
         events.where((event) => event is LyricsSearchTextChangedEvent).debounceTime(
-              Duration(milliseconds: DEFAULT_SEARCH_DEBOUNCE),
+              Duration(milliseconds: defaultSearchDebounce),
             );
 
     return super.transformEvents(
@@ -85,8 +85,17 @@ class LyricsSearchBloc extends Bloc<LyricsSearchEvent, LyricsSearchState> {
       yield LyricsSearchLoadingState();
       try {
         // final failureOrLyrics = await lyricsRepository.searchLyrics(searchQuery);
-        final failureOrLyrics = await searchLyricsUsecase(searchQuery);
+        print('>>> LyricsSearchBloc._mapLyricSearchTextChangedToState - bef call searchLyricsUsecase');
+        // final failureOrLyrics = await searchLyricsUsecase(searchQuery);
+        var failureOrLyrics;
+        try {
+          failureOrLyrics = await searchLyricsUsecase(searchQuery);
+        } catch (e) {
+          print('>>> LyricsSearchBloc._mapLyricSearchTextChangedToState - call searchLyricsUsecase error: $e');
+        }
+        print('>>> LyricsSearchBloc._mapLyricSearchTextChangedToState - failureOrLyrics: $failureOrLyrics');
         if (failureOrLyrics.isRight()) {
+          print('>>> LyricsSearchBloc._mapLyricSearchTextChangedToState - success: ${failureOrLyrics.toOption().toNullable()!}');
           yield LyricsSearchSuccessState(failureOrLyrics.toOption().toNullable()!, searchQuery);
         } else {
           yield LyricsSearchErrorState('Error on search!');

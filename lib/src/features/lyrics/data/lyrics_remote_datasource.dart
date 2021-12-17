@@ -1,9 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:itg_lyrics/src/app_private_config.dart';
+import 'package:itg_lyrics/src/common/secrets.dart';
 import 'package:itg_lyrics/src/core/error/exception.dart';
+import 'package:itg_lyrics/src/features/lyrics/api/search_result.dart';
+import 'package:itg_lyrics/src/features/lyrics/api/search_result_error.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/lyrics_entity.dart';
+import 'package:itg_lyrics/src/features/lyrics/api/song_mapper.dart';
+import 'package:itg_lyrics/src/features/lyrics/domain/network_lyric.dart';
 
 import 'lyrics_model.dart';
 
@@ -19,8 +25,55 @@ class LyricsRemoteDataSourceImpl implements LyricsRemoteDataSource {
   LyricsRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<LyricsModel>> searchLyrics(query) async {
-    return Future.value([]);
+  Future<List<NetworkLyric>> searchLyrics(query) async {
+    print('>>> LyricsRemoteDataSourceImpl.searchLyrics ---- query: $query');
+    final songMapper = SongMapper();
+    // print('>>> LyricsRemoteDataSourceImpl.searchLyrics - songMapper: $songMapper');
+    // final response = http.Response('aaaaaa', 404);
+    var response;
+    try {
+      // print('>>> LyricsRemoteDataSourceImpl.searchLyrics - bef call api - url: "${"$geniusBaseUrl$query"}"}');
+      // print({
+      //   // 'Content-Type': 'application/json',
+      //   HttpHeaders.acceptHeader: 'application/json',
+      //   HttpHeaders.contentTypeHeader: 'application/json',
+      //   HttpHeaders.authorizationHeader: "Bearer $geniusApiKey"
+      // });
+      response = await client.get(
+        // Uri.parse("$geniusBaseUrl$query"),
+        Uri.parse("$geniusBaseUrl?q=$query&access_token=$geniusApiKey"),
+        // Uri.parse("https://api.genius.com/search"),
+        // Uri.parse("https://api.genius.com/search?access_token=gf4xUGD3C1hAM3yDACH7OQ6EXeKBtP-PKL-FB-JJKM-BPuJV0fyfVMpWT_mjL4Wm"),   // it works!
+        headers: {
+          // 'Content-Type': 'application/json',
+          HttpHeaders.acceptHeader: 'application/json',
+          // HttpHeaders.contentTypeHeader: 'application/json',
+          // HttpHeaders.authorizationHeader: "Bearer $geniusApiKey"
+        },
+      );
+    }
+    catch (e) {
+      print('>>> LyricsRemoteDataSourceImpl.searchLyrics - error: $e');
+    }
+    // print('>>> LyricsRemoteDataSourceImpl.searchLyrics....');
+    // print('>>> LyricsRemoteDataSourceImpl.searchLyrics - response: $response');
+    // print('>>> LyricsRemoteDataSourceImpl.searchLyrics - response.body: ${response.body}');
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      final results = json.decode(response.body);
+      // print('>>> LyricsRemoteDataSourceImpl.searchLyrics - results: $results');
+      return SearchResult.fromJson(results)
+          .searchItems
+          .songs
+          .map(
+            (songResult) => songMapper.toDomainModel(songResult.songResultItem),
+      )
+      .toList() as List<NetworkLyric>;
+    } else {
+      print('>>> LyricsRemoteDataSourceImpl.searchLyrics - error... ');
+      throw ServerException();
+      // throw MetaResponse.fromJson(results).searchResultError;
+    }
   }
 
   @override

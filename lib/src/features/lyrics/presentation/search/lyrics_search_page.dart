@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:itg_lyrics/src/core/constants.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/add_lyric_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/edit_lyric_usecase.dart';
 import 'package:itg_lyrics/src/features/lyrics/domain/remove_lyric_usecase.dart';
@@ -13,14 +14,14 @@ import 'bloc/lyrics_search.dart';
 import 'lyrics_search_list.dart';
 
 class LyricsSearchPage extends StatelessWidget {
-  final AddLyricUsecase addLyricUsecase;
-  final EditLyricUsecase editLyricUsecase;
-  final SearchLyricsUsecase searchLyricsUsecase;
-  final RemoveLyricUsecase removeLyricUsecase;
-
-  LyricsSearchPage({
-    Key? key, required this.addLyricUsecase, required this.editLyricUsecase,
-    required this.searchLyricsUsecase, required this.removeLyricUsecase}): super(key: key);
+  // final AddLyricUsecase addLyricUsecase;
+  // final EditLyricUsecase editLyricUsecase;
+  // final SearchLyricsUsecase searchLyricsUsecase;
+  // final RemoveLyricUsecase removeLyricUsecase;
+  //
+  // LyricsSearchPage({
+  //   Key? key, required this.addLyricUsecase, required this.editLyricUsecase,
+  //   required this.searchLyricsUsecase, required this.removeLyricUsecase}): super(key: key);
 
   static const routeName = '/search';
 
@@ -41,6 +42,7 @@ class LyricsSearchPage extends StatelessWidget {
           );
         },
         child: Icon(Icons.add),
+        key: keyButtonSearchPageAdd
       ),
     );
     // return MultiBlocProvider(

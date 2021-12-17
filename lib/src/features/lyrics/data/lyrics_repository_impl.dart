@@ -42,11 +42,13 @@ class LyricsRepositoryImpl implements LyricsRepository {
 
   @override
   Future<Either<Failure, List<LyricsEntity>>> searchLyrics(String query) async {
+    print('>>> LyricsRepositoryImpl.searchLyrics - query: $query');
     final networkList = await remoteDataSource.searchLyrics(query);
-    final localList = await localDataSource.getLyrics(query);
-    return Right(List<LyricsEntity>.empty(growable: true)
-      ..addAll(networkList)
-      ..addAll(localList));
+    // final localList = await localDataSource.getLyrics(query);
+    // return Right(List<LyricsEntity>.empty(growable: true)
+    //   ..addAll(networkList)
+    //   ..addAll(localList));
+    return Right(networkList);
   }
 
   @override

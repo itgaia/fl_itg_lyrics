@@ -9,6 +9,10 @@ based on:
   https://fredgrott.medium.com/mastering-mocking-in-flutter-in-15-minutes-8f829e0efbdd
   https://github.com/fredgrott/not_in_flutter_docs/tree/master/gtdd/gtdd_ten
   Fred Grott - Nov 7 2021
+* Dynamic Form
+  https://github.com/felangel/bloc/tree/master/examples/flutter_dynamic_form
+  an example of how to use the bloc and flutter_bloc packages to implement a dynamic form which pulls data from a repository.
+
 
 ### Goals
 

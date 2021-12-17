@@ -6,6 +6,7 @@ class SearchResult {
   const SearchResult({required this.searchItems});
 
   static SearchResult fromJson(dynamic json) {
+    // print('>>> SearchResult.fromJson - json: $json');
     return SearchResult(searchItems: SearchItems.fromJson(json["response"]));
   }
 }
